@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>検証用リポジトリ 状態調査 (claude-tower-test-repo)</title>
+<style>
+  :root { --fg:#1f2328; --mute:#59636e; --line:#d1d9e0; --bg2:#f6f8fa; --ok:#1a7f37; --warn:#9a6700; --ng:#cf222e; --info:#0969da; --draft:#59636e; }
+  body { font-family: "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif; color:var(--fg); max-width:1100px; margin:24px auto; padding:0 16px; line-height:1.6; }
+  h1 { font-size:1.6em; border-bottom:2px solid var(--line); padding-bottom:6px; }
+  h2 { font-size:1.25em; margin-top:2em; border-left:4px solid var(--info); padding-left:8px; }
+  .meta { color:var(--mute); font-size:.9em; }
+  table { border-collapse:collapse; width:100%; margin:8px 0 16px; font-size:.92em; }
+  th, td { border:1px solid var(--line); padding:4px 8px; text-align:left; vertical-align:top; }
+  th { background:var(--bg2); }
+  .tiles { display:flex; flex-wrap:wrap; gap:12px; margin:12px 0; }
+  .tile { border:1px solid var(--line); border-radius:8px; padding:10px 16px; min-width:150px; background:var(--bg2); }
+  .tile .n { font-size:1.8em; font-weight:bold; }
+  .tile .l { color:var(--mute); font-size:.85em; }
+  .b { display:inline-block; padding:0 8px; border-radius:10px; font-size:.82em; color:#fff; white-space:nowrap; }
+  .open { background:var(--ok); } .draft { background:var(--draft); } .merged { background:#8250df; } .closed { background:var(--ng); }
+  .warn { color:var(--warn); font-weight:bold; } .ng { color:var(--ng); font-weight:bold; }
+  code { background:var(--bg2); padding:0 4px; border-radius:4px; }
+  pre { background:var(--bg2); padding:10px; border-radius:6px; overflow-x:auto; font-size:.85em; }
+</style>
+</head>
+<body>
+
+<h1>検証用リポジトリ 状態調査</h1>
+<p class="meta">
+対象 : yamazawa/claude-tower-test-repo<br>
+調査日 : 2026-11-16<br>
+調査ブランチ : issue-2-subtask-13 (Issue #2 / PR #25)<br>
+調査方法 : git log / git branch / git worktree / gh issue list / gh pr list
+</p>
+
+<h2>1. サマリ</h2>
+<div class="tiles">
+  <div class="tile"><div class="n">3</div><div class="l">Issue (Open 2 / Closed 1)</div></div>
+  <div class="tile"><div class="n">22</div><div class="l">PR 総数</div></div>
+  <div class="tile"><div class="n">19</div><div class="l">未完了PR (Open 11 / Draft 8)</div></div>
+  <div class="tile"><div class="n">2</div><div class="l">マージ済PR (#11, #20)</div></div>
+  <div class="tile"><div class="n">22</div><div class="l">master以外のリモートブランチ</div></div>
+  <div class="tile"><div class="n">13</div><div class="l">ローカルworktree (本体含む)</div></div>
+</div>
+<ul>
+  <li>リポジトリは管理塔の実機検証専用で、プロダクトコードは存在しない。</li>
+  <li>masterの内容は <code>README.md</code> と <code>.claude-tower/subtask.md</code> の2ファイルのみ。</li>
+  <li>検証用のブランチ・PRが整理されずに累積している。</li>
+  <li>ローカルのみに存在する未pushコミットが2件ある。</li>
+</ul>
+
+<h2>2. masterの状態</h2>
+<table>
+  <tr><th>項目</th><th>内容</th></tr>
+  <tr><td>origin/master 先頭</td><td><code>6971157</code> Merge pull request #20 (2026-11-15)</td></tr>
+  <tr><td>ファイル構成</td><td><code>README.md</code>, <code>.claude-tower/subtask.md</code></td></tr>
+  <tr><td>マージ履歴</td><td>初期コミット <code>0c8d6e0</code> → PR #11 (Phase10検証A) → PR #20 (スマホ確認用)</td></tr>
+  <tr><td>ローカルmaster</td><td><span class="warn">origin/masterより4コミット遅れ</span> (本体 <code>C:/git/claude-tower-test-repo</code> が <code>0c8d6e0</code> のまま)</td></tr>
+  <tr><td>注意点</td><td><span class="warn">管理塔の作業ファイル <code>.claude-tower/subtask.md</code> がマージによりmasterに混入している。</span></td></tr>
+</table>
+
+<h2>3. Issue一覧</h2>
+<table>
+  <tr><th>No.</th><th>タイトル</th><th>状態</th><th>作成日時(UTC)</th><th>備考</th></tr>
+  <tr><td>#2</td><td>検証用Issue</td><td><span class="b open">OPEN</span></td><td>2026-11-14 10:45</td><td>Phase 1環境検証用。ほぼ全サブタスクの親。</td></tr>
+  <tr><td>#22</td><td>[動作確認]Claudeによる自動Issue作成テスト</td><td><span class="b open">OPEN</span></td><td>2026-11-15 14:40</td><td>PR #21 (Issue作成能力の確認) で作成されたもの。</td></tr>
+  <tr><td>#24</td><td>画面からのタスク追加動作確認</td><td><span class="b closed">CLOSED</span></td><td>2026-11-15 15:54</td><td>COMPLETEDでクローズ済み。</td></tr>
+</table>
+
+<h2>4. PR・ブランチ一覧</h2>
+<p>全PRのbaseは <code>master</code>。</p>
+<table>
+  <tr><th>PR</th><th>タイトル</th><th>ブランチ</th><th>状態</th><th>差分 (vs master)</th><th>ローカル</th></tr>
+  <tr><td>#1</td><td>検証：初期コミット後のDraft PR作成テスト</td><td>issue-3-verify-subtask-flow</td><td><span class="b open">OPEN</span></td><td>subtask.mdのみ</td><td>worktree無し</td></tr>
+  <tr><td>#3</td><td>Phase4検証サブタスク</td><td>issue-2-phase4</td><td><span class="b draft">DRAFT</span></td><td>subtask.mdのみ</td><td>worktree有</td></tr>
+  <tr><td>#4</td><td>Phase6検証サブタスク</td><td>issue-2-phase6</td><td><span class="b draft">DRAFT</span></td><td>subtask.mdのみ</td><td>worktree有</td></tr>
+  <tr><td>#5</td><td>Phase7検証サブタスク</td><td>issue-2-phase7</td><td><span class="b open">OPEN</span></td><td>subtask.mdのみ</td><td><span class="ng">未push 1件 (notes.txt)</span></td></tr>
+  <tr><td>#6</td><td>Phase8並列検証1</td><td>issue-2-phase81</td><td><span class="b open">OPEN</span></td><td>subtask.mdのみ</td><td>worktree有</td></tr>
+  <tr><td>#7</td><td>Phase8並列検証2</td><td>issue-2-phase82</td><td><span class="b open">OPEN</span></td><td>subtask.mdのみ</td><td>worktree有</td></tr>
+  <tr><td>#8</td><td>Phase8並列検証3</td><td>issue-2-phase83</td><td><span class="b open">OPEN</span></td><td>subtask.mdのみ</td><td>worktree有</td></tr>
+  <tr><td>#9</td><td>Phase8並列検証4</td><td>issue-2-phase84</td><td><span class="b open">OPEN</span></td><td>subtask.mdのみ</td><td>worktree有</td></tr>
+  <tr><td>#10</td><td>Phase8異常終了検証</td><td>issue-2-phase8</td><td><span class="b draft">DRAFT</span></td><td>subtask.mdのみ</td><td>worktree有</td></tr>
+  <tr><td>#11</td><td>Phase10検証A</td><td>issue-2-phase10a</td><td><span class="b merged">MERGED</span></td><td>差分なし</td><td>worktree無し</td></tr>
+  <tr><td>#12</td><td>Phase10検証B</td><td>issue-2-phase10b</td><td><span class="b open">OPEN</span></td><td>subtask.mdのみ</td><td>worktree無し</td></tr>
+  <tr><td>#13</td><td>Phase10検証C-失敗用</td><td>issue-2-phase10c</td><td><span class="b draft">DRAFT</span></td><td>subtask.mdのみ</td><td>worktree無し</td></tr>
+  <tr><td>#14</td><td>Phase10検証D</td><td>issue-2-phase10d</td><td><span class="b open">OPEN</span></td><td>subtask.mdのみ</td><td>worktree無し</td></tr>
+  <tr><td>#15</td><td>Phase10検証E</td><td>issue-2-phase10e</td><td><span class="b open">OPEN</span></td><td>subtask.mdのみ</td><td>worktree無し</td></tr>
+  <tr><td>#16</td><td>Phase10検証F</td><td>issue-2-phase10f</td><td><span class="b open">OPEN</span></td><td>subtask.mdのみ</td><td>worktree無し</td></tr>
+  <tr><td>#17</td><td>Phase10同時作成G</td><td>issue-2-phase10g</td><td><span class="b draft">DRAFT</span></td><td>subtask.mdのみ</td><td>worktree無し</td></tr>
+  <tr><td>#18</td><td>Phase10同時作成I</td><td>issue-2-phase10i</td><td><span class="b draft">DRAFT</span></td><td>subtask.mdのみ</td><td>worktree無し</td></tr>
+  <tr><td>#19</td><td>Phase10同時作成J</td><td>issue-2-phase10j</td><td><span class="b draft">DRAFT</span></td><td>subtask.mdのみ</td><td>worktree無し</td></tr>
+  <tr><td>#20</td><td>スマホ確認用</td><td>issue-2-subtask-10</td><td><span class="b merged">MERGED</span></td><td>差分なし</td><td><span class="ng">マージ後の未push 1件 (src/calc.c)</span></td></tr>
+  <tr><td>#21</td><td>Issue作成能力の確認</td><td>issue-2-issue</td><td><span class="b open">OPEN</span></td><td>subtask.mdのみ</td><td>worktree有</td></tr>
+  <tr><td>#23</td><td>シェル制限後の動作確認</td><td>issue-2-subtask-12</td><td><span class="b closed">CLOSED</span></td><td>subtask.md, shell-restriction-check.txt</td><td>worktree有</td></tr>
+  <tr><td>#25</td><td>検証用リポジトリの状態調査</td><td>issue-2-subtask-13</td><td><span class="b draft">DRAFT</span></td><td>本資料を追加</td><td>本worktree</td></tr>
+</table>
+<p>「subtask.mdのみ」は、管理塔が記録した指示ファイル <code>.claude-tower/subtask.md</code> 以外に成果物が無いことを示す。</p>
+
+<h2>5. ローカルworktree</h2>
+<pre>C:/git/claude-tower-test-repo                     0c8d6e0 [master]  ※origin より4コミット遅れ
+C:/git/claude-tower-worktrees/issue-2-issue       849dc0e
+C:/git/claude-tower-worktrees/issue-2-phase4      ec27f4c
+C:/git/claude-tower-worktrees/issue-2-phase6      26c2e21
+C:/git/claude-tower-worktrees/issue-2-phase7      897dc56  ※未push 1件
+C:/git/claude-tower-worktrees/issue-2-phase8      c9848ef
+C:/git/claude-tower-worktrees/issue-2-phase81     bb01f5d
+C:/git/claude-tower-worktrees/issue-2-phase82     8b248de
+C:/git/claude-tower-worktrees/issue-2-phase83     a03fb27
+C:/git/claude-tower-worktrees/issue-2-phase84     4006664
+C:/git/claude-tower-worktrees/issue-2-subtask-10  833923b  ※未push 1件
+C:/git/claude-tower-worktrees/issue-2-subtask-12  29b3b1f
+C:/git/claude-tower-worktrees/issue-2-subtask-13  5a38389</pre>
+<p>Phase10系ブランチ (a〜j) と issue-3-verify-subtask-flow は、ローカルブランチのみ残りworktreeは削除済み。</p>
+
+<h2>6. 検出した問題点</h2>
+<table>
+  <tr><th>No.</th><th>対象</th><th>内容</th><th>重要度</th></tr>
+  <tr><td>1</td><td>issue-2-phase7</td><td>Phase7検証の成果物 <code>notes.txt</code> のコミット <code>897dc56</code> が未push。PR #5に反映されていない。</td><td class="ng">高</td></tr>
+  <tr><td>2</td><td>issue-2-subtask-10</td><td><code>src/calc.c</code> のコミット <code>833923b</code> がPR #20マージ後に作成され未push。masterに反映されていない。</td><td class="ng">高</td></tr>
+  <tr><td>3</td><td>master</td><td><code>.claude-tower/subtask.md</code> がmasterに混入している。以後のサブタスクPRは常にこのファイルの差分を含む。</td><td class="warn">中</td></tr>
+  <tr><td>4</td><td>本体のローカルmaster</td><td>origin/masterより4コミット遅れている。</td><td class="warn">中</td></tr>
+  <tr><td>5</td><td>PR全般</td><td>未完了PRが19件累積し、多くは指示ファイルのみで成果物が無い。</td><td class="warn">中</td></tr>
+  <tr><td>6</td><td>マージ/クローズ済ブランチ</td><td>issue-2-phase10a, issue-2-subtask-10, issue-2-subtask-12 のブランチが残っている。</td><td>低</td></tr>
+  <tr><td>7</td><td>issue-3-verify-subtask-flow</td><td>ブランチ名のIssue番号#3はIssueではなくPR #3 を指しており、命名規約と整合しない。</td><td>低</td></tr>
+  <tr><td>8</td><td>Issue #22</td><td>自動作成テストのIssueがOpenのまま残っている。</td><td>低</td></tr>
+</table>
+
+<h2>7. 整理案 (未実施)</h2>
+<ul>
+  <li>No.1, 2 の未pushコミットを残すか破棄するか判断する。</li>
+  <li><code>.claude-tower/</code> をmasterから除外し、<code>.gitignore</code> 等での扱いを決める。</li>
+  <li>検証完了済のPRをクローズし、対応するリモートブランチ・worktreeを削除する。</li>
+  <li>本体のローカルmasterを <code>git pull</code> で最新化する。</li>
+</ul>
+<p>いずれも破壊的または人間判断が必要な操作のため、本サブタスクでは実施していない。</p>
+
+</body>
+</html>
