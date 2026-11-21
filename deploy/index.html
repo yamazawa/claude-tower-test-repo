@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>デプロイ</title>
+<style>
+  body { font-family: sans-serif; margin: 2rem; }
+  #deploy-button { padding: 0.6rem 1.6rem; font-size: 1rem; cursor: pointer; }
+</style>
+</head>
+<body>
+<h1>デプロイ</h1>
+<button type="button" id="deploy-button">デプロイ</button>
+<script>
+  // デプロイボタン押下時の処理
+  //
+  // 現時点では何もしない。
+  // デプロイ処理は後続サブタスクで実装する。
+  function onDeployClick() {
+  }
+
+  document.getElementById("deploy-button").addEventListener("click", onDeployClick);
+</script>
+</body>
+</html>
